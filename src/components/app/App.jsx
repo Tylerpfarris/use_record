@@ -49,9 +49,10 @@ const useRecord = (initial) => {
   };
   
   const calmDown = () => {
+    clearInterval(doDisco);
+    setIndex(0);
     setDisco(false)
-    clearInterval(disco);
-    setCurrent('#000000');
+    setCurrent([initial]);
     
     
   };
@@ -122,6 +123,7 @@ function App() {
           backgroundColor: current[index],
           width: '10rem',
           height: '10rem',
+          borderRadius: '100px'
         }}
       ></div>
       <br />
