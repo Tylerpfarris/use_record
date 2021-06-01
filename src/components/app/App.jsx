@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useInterval } from '../hooks/hooks';
 
 const useRecord = (initial) => {
   const [current, setCurrent] = useState([initial]);
@@ -38,24 +39,18 @@ const useRecord = (initial) => {
   };
 
   const handleDisco = () => {
-    setDisco(true)
-  }
-  useEffect(() => {
-    if (disco) doDisco();
-  }, [current, disco]);
+    if (!disco) setDisco(true);
+    else setDisco(false);
+  };
 
-  const doDisco = () => {
-    setInterval(() => randomColor(), 3000);
-  };
-  
-  const calmDown = () => {
-    clearInterval(doDisco);
-    setIndex(0);
-    setDisco(false)
-    setCurrent([initial]);
-    
-    
-  };
+  useInterval(() => {
+    if (disco) { 
+      let randomDisco = randomColor();
+      record(randomDisco)
+  }
+  }, 500) 
+
+
   return {
     index,
     current,
@@ -66,8 +61,7 @@ const useRecord = (initial) => {
     redo10,
     randomColor,
     handleDisco,
-    doDisco,
-    calmDown,
+    disco
   };
 };
 
@@ -82,7 +76,7 @@ function App() {
     randomColor,
     record,
     handleDisco,
-    calmDown,
+    disco
   } = useRecord('#FF0101');
 
   return (
@@ -99,9 +93,15 @@ function App() {
         random color
       </button>
       <br />
-      <button data-testid="disco-button" onClick={handleDisco}>
-        the more you click the more you disco
-      </button>
+      {!disco ? (
+        <button data-testid="disco-button" onClick={handleDisco}>
+          disco
+        </button>
+      ) : (
+        <button data-testid="disco-button" onClick={handleDisco}>
+          No Disco
+        </button>
+      )}
       <br />
       <button data-testid="redo-button" onClick={redo}>
         redo
@@ -123,13 +123,9 @@ function App() {
           backgroundColor: current[index],
           width: '10rem',
           height: '10rem',
-          borderRadius: '100px'
+          borderRadius: '100px',
         }}
       ></div>
-      <br />
-      <button data-testid="calm-down-button" onClick={calmDown}>
-        Calm down there bud
-      </button>
     </>
   );
 }
