@@ -48,7 +48,7 @@ const useRecord = (initial) => {
       let randomDisco = randomColor();
       record(randomDisco)
   }
-  }, 500) 
+  }, 300) 
 
 
   return {
@@ -95,7 +95,7 @@ function App() {
       <br />
       {!disco ? (
         <button data-testid="disco-button" onClick={handleDisco}>
-          disco
+          Disco 
         </button>
       ) : (
         <button data-testid="disco-button" onClick={handleDisco}>
